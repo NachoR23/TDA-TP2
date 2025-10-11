@@ -77,7 +77,7 @@
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
-\rhead{\footnotesize \textsc {Trabajo práctico 0\\ Teoría de Algoritmos}} % Trabajo práctico
+\rhead{\footnotesize \textsc {Trabajo práctico 1\\ Teoría de Algoritmos}} % Trabajo práctico
 \lhead{\includegraphics[width=2.5cm]{logo}}
 \cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
 
@@ -104,18 +104,17 @@
 \\[1cm]
 	\textsc{\Large Teoría de Algoritmos}\\           % Materia
 	\textsc{\small (75.29) Curso Buchwald - Genender}\\[0.4cm]    % Subtítulo materia
-	{ \huge \bfseries Trabajo Práctico 0 \\ Lineamientos sobre informes}\\[0.3cm]      % Título
+	{ \huge \bfseries Trabajo Práctico 1 \\ Algoritmos Greedy en la Nación del Fuego}\\[0.3cm]      % Título
 	\andreasline \\[0.2cm]
 	{\large \today  \\[0.4cm]}                          % Fecha
-	\begin{minipage}{0.4\textwidth}
-		\begin{flushleft}
-            \large{Alan Turing \\ 101010}                   % Integrante 1
-		\end{flushleft}
-	\end{minipage}
-	\begin{minipage}{0.4\textwidth}
-		\begin{flushright}
-            \large{Barbara Liskov \\ 111111}                % Integrante 2
-		\end{flushright}
-	\end{minipage}
+    \begin{tabular}{ll}
+        \large{Carlos Franco Mendoza Coronado} & \large{111758} \\
+        \\
+        \large{Gian Keberlein} & \large{109585} \\
+        \\
+        \large{Juan Cruz Robledo Puch} & \large{106164} \\
+        \\
+        \large{Ignacio Julian Rodriguez} & \large{111759} \\
+    \end{tabular}
  \end{center}
 }

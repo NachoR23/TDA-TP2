@@ -4,6 +4,7 @@ import os
 # La funcion optimizar_ataques recibe:
 # x: un arreglo con la cantidad de soldados que atacaran en cada minuto
 # f: un arreglo con la cantidad de soldados que se pueden eliminar lanzando un ataque
+# n: cantidad de minutos
 
 # Devuelve:
 #   - total_eliminados: entero con el máximo total posible
@@ -35,11 +36,10 @@ def optimizar_ataques(x, f, n):
             if gain > dp[i]:
                 dp[i] = gain
                 prev[i] = k
-    return reconstruir(prev, F,X, dp,n )
+    return reconstruir(prev,dp,n )
 
 
-def reconstruir(prev, F, X, dp, n):
-    # Reconstruir usando un enfoque más directo
+def reconstruir(prev, dp, n):
     decisiones = []
     i = n
     # Reconstruir hacia atrás
@@ -55,8 +55,7 @@ def reconstruir(prev, F, X, dp, n):
             for j in range(i-1, k-1, -1):
                 decisiones.append(("Cargar", j))
             i = k - 1
-    
-    # Ordenar por minuto y extraer solo las decisiones
+    # Ordenar por minuto
     decisiones.sort(key=lambda x: x[1])
     secuencia = [decision for decision, minuto in decisiones]
     total = dp[n]

@@ -1,0 +1,81 @@
+\section{Complejidad}
+
+\subsection{Algoritmo Planteado}
+
+El algoritmo que implementamos para resolver el problema lo podemos dividir en dos partes:\\
+La primera que busca los minutos en los que es optimo atacar, solución optima:
+\begin{lstlisting}[language=Python]
+def optimizar_ataques(x, f, n):
+    # usar indexación 1-based para DP y claridad
+    X = [0] + x[:]          # X[1..n]
+    F = [0] + f[:]          # F[1..m], F[j] = f(j)
+    # dp[i] = máximo hasta el minuto i
+    dp = [0] * (n + 1)
+    # prev[i] guarda el valor k que produce la mejor solución atacando en i
+    # si prev[i] = 0 significa que lo mejor fue "no atacar en i" 
+    prev = [0] * (n + 1)
+    for i in range(1, n+1):
+        # opción 1: no atacar en i
+        dp[i] = dp[i-1]
+        prev[i] = 0
+        # opción 2: atacar en i; probar todos los posibles "k" donde k indica
+        # el índice inmediatamente posterior al último ataque (es decir, acumulamos desde k hasta i inclusive: j = i-k+1 minutos de carga)
+        for k in range(1, i+1):
+            j = i - k + 1
+            # Si f no define tantos j, usamos el último valor disponible (creciente)
+            fj = F[j] if j < len(F) else F[-1]
+            gain = dp[k-1] + min(X[i], fj)
+            if gain > dp[i]:
+                dp[i] = gain
+                prev[i] = k
+    return reconstruir(prev,dp,n )
+\end{lstlisting}
+En la segunda parte organizamos los minutos de ataque de manera ordenada y damos una respuesta. La respuesta se forma con la cantidad de bajas totales y una lista ordenada en los mintos que debemos atacar o cargar la habilidad.
+\begin{lstlisting}[language=Python]
+def reconstruir(prev, dp, n):
+    decisiones = []
+    i = n
+    # Reconstruir hacia atrás
+    while i > 0:
+        if prev[i] == 0:
+            decisiones.append(("Cargar", i))
+            i -= 1
+        else:
+            k = prev[i]
+            # El minuto i es de ataque
+            decisiones.append(("Atacar", i))
+            # Los minutos desde k hasta i-1 son de carga
+            for j in range(i-1, k-1, -1):
+                decisiones.append(("Cargar", j))
+            i = k - 1
+    # Ordenar por minuto
+    decisiones.sort(key=lambda x: x[1])
+    secuencia = [decision for decision, minuto in decisiones]
+    total = dp[n]
+    return total, secuencia
+    
+\end{lstlisting}
+\pagebreak 
+\subsection{Complejidad del algoritmo}
+Para poder analizar la complejidad del algoritmo seguimos con la division presentada anteriormente:
+\begin{itemize}
+    \item \textbf{Parte de optimización o principal}\\
+    En esta parte realizamos dos recorridos, tanto a la lista de soldados que atacan por minuto como a la lista de soluciones o bajas al realizar el contrataque. Con esto nos damos cuenta que tenemos el primer recorrido que depende de $n$ y el segundo de $i$, entonces determinamos lo sigueinte:
+        \[T(n) = \sum_{i=1}^{n} O(i) = O(n^2)\]
+    
+    \item \textbf{Reconstrucción}\\
+    En este caso tenemos que pasar por todas las soluciónes posibles y encontrar la igualdad con nuesta solución optima para poder dar una respuesta es por esto que nuestra complejidad se veria de la siguiente forma:
+        \[O(n) * O(n) = O(n^2)\]
+\end{itemize}
+
+Por lo tanto, la complejidad global del algoritmo es:\[T(n) = O(n^2)\]
+
+\subsection{Efecto de los parámetros \(t_i\) y \(b_i\)}
+
+Los valores de \(b_i\) y \(t_i\) influyen únicamente en el \textbf{orden resultante} de las batallas y en el valor final de la suma ponderada, pero no en el tiempo de ejecución del algoritmo. La razón es que la complejidad temporal está determinada por el paso de ordenamiento, el cual depende de la cantidad de batallas \(n\), y no de los valores numéricos de los parámetros.
+
+\begin{itemize}
+    \item Si todos los cocientes \( \tfrac{b_i}{t_i} \) son iguales, cualquier orden es óptimo, y el algoritmo igualmente ordena en tiempo \(O(n \log n)\).
+    \item Si los valores de \(b_i\) y \(t_i\) presentan gran variabilidad, el orden resultante puede diferir mucho, lo que afecta la suma ponderada obtenida, pero no modifica la complejidad: el ordenamiento sigue siendo \(O(n \log n)\).
+    \item El tiempo de ejecución del algoritmo depende únicamente de \(n\), la cantidad de batallas, y no de las magnitudes de los \(b_i\) y \(t_i\).
+\end{itemize}

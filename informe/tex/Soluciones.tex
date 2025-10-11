@@ -1,0 +1,37 @@
+\section{Empezamos a desarrollar la solución}
+Para poder desarrollar una solución, lo que tenemos que plantear es la ecuación de recurrencia. Para eso empezamos reconociendo los casos base y las situaciones comúnes que aparecen.
+Nomenclatura utilizada:
+\begin{itemize}
+\item $X[i]$:  bajase en un determinado minuto i.
+\item $F[j]$: bajas si cargamos durante j minutos.
+\item $n$: minutos.
+\item $dp[i]$: bajas acumuladas hasta un minuto i.
+\item $k$: minuto donde empezo la carga.
+\end{itemize}
+Caso base:
+\begin{lstlisting}[language=Python]
+    dp[0] = 0  
+    # No hay minutos, no hay daño
+\end{lstlisting}
+Primer caso:
+\begin{lstlisting}[language=Python]
+    dp[i] = dp[i-1]
+    # Decidimos no atacar en el minuto i
+\end{lstlisting}
+Segundo caso:
+\begin{lstlisting}[language=Python]
+    dp[i] = dp[k-1] + min(X[i], F[j])
+    # Decidimos atacar en el minuto i
+\end{lstlisting}
+Lo que me piden es maximizar la cantidad de bajas enemigas, o sea podemos plantear la siguiente ecuación:
+\begin{lstlisting}[language=Python]
+    dp[i] = max(
+        # Opcion 1: No atacar en minuto i
+        dp[i-1],  
+        # Opción 2: Atacar en i con ultimo ataque en k
+        max_{k=1 to i} { dp[k-1] + min(X[i], F[i-k+1]) }
+        )
+\end{lstlisting}
+
+
+
