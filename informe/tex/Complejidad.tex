@@ -3,7 +3,7 @@
 \subsection{Algoritmo Planteado}
 
 El algoritmo que implementamos para resolver el problema lo podemos dividir en dos partes:\\
-La primera que busca los minutos en los que es optimo atacar, solución optima:
+La primera que busca los minutos en los que es óptimo atacar, solución óptima:
 \begin{lstlisting}[language=Python]
 def optimizar_ataques(x, f, n):
     # usar indexación 1-based para DP y claridad
@@ -30,7 +30,7 @@ def optimizar_ataques(x, f, n):
                 prev[i] = k
     return reconstruir(prev,dp,n )
 \end{lstlisting}
-En la segunda parte organizamos los minutos de ataque de manera ordenada y damos una respuesta. La respuesta se forma con la cantidad de bajas totales y una lista ordenada en los mintos que debemos atacar o cargar la habilidad.
+En la segunda parte organizamos los minutos de ataque de manera ordenada y damos una respuesta. La respuesta se forma con la cantidad de bajas totales y una lista ordenada en los minutos que debemos atacar o cargar la habilidad.
 \begin{lstlisting}[language=Python]
 def reconstruir(prev, dp, n):
     decisiones = []
@@ -57,25 +57,25 @@ def reconstruir(prev, dp, n):
 \end{lstlisting}
 \pagebreak 
 \subsection{Complejidad del algoritmo}
-Para poder analizar la complejidad del algoritmo seguimos con la division presentada anteriormente:
+Para poder analizar la complejidad del algoritmo, seguimos con la división presentada anteriormente:
 \begin{itemize}
     \item \textbf{Parte de optimización o principal}\\
     En esta parte realizamos dos recorridos, tanto a la lista de soldados que atacan por minuto como a la lista de soluciones o bajas al realizar el contrataque. Con esto nos damos cuenta que tenemos el primer recorrido que depende de $n$ y el segundo de $i$, entonces determinamos lo sigueinte:
         \[T(n) = \sum_{i=1}^{n} O(i) = O(n^2)\]
     
     \item \textbf{Reconstrucción}\\
-    En este caso tenemos que pasar por todas las soluciónes posibles y encontrar la igualdad con nuesta solución optima para poder dar una respuesta es por esto que nuestra complejidad se veria de la siguiente forma:
+    En este caso tenemos que pasar por todas las soluciónes posibles y encontrar la igualdad con nuesta solución optima para poder dar una respuesta, debido a esto nuestra complejidad seria de la siguiente forma:
         \[O(n) * O(n) = O(n^2)\]
 \end{itemize}
 
 Por lo tanto, la complejidad global del algoritmo es:\[T(n) = O(n^2)\]
 
-\subsection{Efecto de los parámetros \(t_i\) y \(b_i\)}
+\subsection{Efecto de los parámetros o variables}
 
-Los valores de \(b_i\) y \(t_i\) influyen únicamente en el \textbf{orden resultante} de las batallas y en el valor final de la suma ponderada, pero no en el tiempo de ejecución del algoritmo. La razón es que la complejidad temporal está determinada por el paso de ordenamiento, el cual depende de la cantidad de batallas \(n\), y no de los valores numéricos de los parámetros.
-
-\begin{itemize}
-    \item Si todos los cocientes \( \tfrac{b_i}{t_i} \) son iguales, cualquier orden es óptimo, y el algoritmo igualmente ordena en tiempo \(O(n \log n)\).
-    \item Si los valores de \(b_i\) y \(t_i\) presentan gran variabilidad, el orden resultante puede diferir mucho, lo que afecta la suma ponderada obtenida, pero no modifica la complejidad: el ordenamiento sigue siendo \(O(n \log n)\).
-    \item El tiempo de ejecución del algoritmo depende únicamente de \(n\), la cantidad de batallas, y no de las magnitudes de los \(b_i\) y \(t_i\).
-\end{itemize}
+Para el desarrollo de este problema podemos reconocer tres variables o parámetros que son influyentes. El primero, el más importante, la cantidad de minutos $n$, la cantidad de tropas por minuto $x$ y la cantidad de bajas posibles en un minuto determinado $f(x)$.
+\begin{enumerate}
+    \item Como mensianmos antes $n$ es el parametro más influyente, ya que para cada minuto $i$ debemos probar todos los posibles puntos de inicio $k$ desde 1 hasta $i$. Cuando $n$ es pequeño, el tiempo de ejecución es aceptable, pero para valores grandes de $n$, el crecimiento cuadrático se vuelve significativo.
+    \item El parametro $x$ nos ayuda a tener un limite de bajas que podemos tener en cada minuto, no influye directamente a la complejidad algoritmica pero si es necesario para poder dar una respuesta.
+    \item El ultimo pero no menos importante es $f(x)$, el cual tampoco influye directamenra a la complejidad. Más bien nos ayuda a dar con la solución más óptima 
+\end{enumerate}
+En resumen, $n$ determina la complejidad del algoritmo, mientras que $x$ y $f(x)$ determinan la solución óptima en el espacio de búsqueda. 

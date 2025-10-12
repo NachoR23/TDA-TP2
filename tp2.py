@@ -5,12 +5,6 @@ import os
 # x: un arreglo con la cantidad de soldados que atacaran en cada minuto
 # f: un arreglo con la cantidad de soldados que se pueden eliminar lanzando un ataque
 # n: cantidad de minutos
-
-# Devuelve:
-#   - total_eliminados: entero con el máximo total posible
-#   - ataques: lista de minutos (1-based) en los que atacar (en orden cronológico)
-#   - dp: arreglo DP (1-based) con los máximos hasta cada minuto
-
 # Complejidad: O(n^2) tiempo
 
 def optimizar_ataques(x, f, n):
