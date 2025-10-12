@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import time
 import random
 
-from tp2 import optimizar_ataques  # Asegurate que tu archivo principal se llame tp2.py
+from tp2 import optimizar_ataques
 
 
 # ==================== GENERACION DE DATOS ==================== #
@@ -15,9 +15,9 @@ def generar_datos_aleatorios(n, seed=1234):
     - f[i]: cantidad de enemigos que pueden eliminarse según los minutos de carga
     """
     random.seed(seed)
-    x = [random.randint(50, 500) for _ in range(n)]       # soldados por minuto
-    f = [random.randint(50, 800) for _ in range(n)]       # potencia acumulada
-    f.sort()  # aseguramos que sea monótona creciente, como dice el enunciado
+    x = [random.randint(100, 1000) for _ in range(n)]       # soldados por minuto
+    f = [random.randint(100, 1000) for _ in range(n)]       # potencia acumulada
+    f.sort()  # aseguramos que sea monótona creciente
     return x, f
 
 
@@ -50,7 +50,7 @@ def recolectar_datos():
     """
     Ejecuta mediciones para distintos tamaños de entrada y devuelve los resultados.
     """
-    tamanos = [100, 200, 400, 800, 1600, 3200, 6400]
+    tamanos = [500, 1500, 3000, 4500, 6000, 7500, 9000]
     tiempos = []
 
     print("=== Midiendo tiempos del algoritmo de ataques Dai Li ===")
