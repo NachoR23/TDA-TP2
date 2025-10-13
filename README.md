@@ -75,3 +75,8 @@ como también el desarrollo del trabajo. No será lo mismo un trabajo realizado 
 indispensable, que uno bien presentado, analizado, y probado con diferentes volúmenes, set de 
 datos, o estrategias de generación de sets, en el caso que corresponda. 
 
+## Forma de Ejucion del trabajo
+
+Para poder facilitar la ejecucion del trabajo utilizamos el mismo formato utilizado en el anterior TP,
+esto consiste en ejecutar este comando de terminal:
+python3 tp2.py ruta/a/entrada.txt
