@@ -1,94 +1,66 @@
-\section{Ejemplos ilustrativos del algoritmo greedy}
-En los proximos dos ejemplos vamos a presentar casos border en donde se muestra que el algoritmo siempre nos da la solucion óptima
+\section{Ejemplos ilustrativos del algoritmo de optimización de ataques}
 
-\subsection{Ejemplo 1: Todos los tiempos iguales}
+En los próximos ejemplos presentamos casos límite donde se muestra que la estrategia del algoritmo siempre da la solución óptima.
 
-\paragraph{Planteo del problema.}  
-Tenemos la siguiente lista de batallas:
-\begin{verbatim}
-T_i,B_i
-10,100
-10,90
-10,90
-10,50
-10,20
-10,10
-\end{verbatim}
-Todas las batallas duran lo mismo ($t=10$). El objetivo es minimizar $\sum b_i F_i$.
-
-\paragraph{Cálculo de razones y orden greedy.}  
-Como $t_i=10$ para todas, la razón $\tfrac{b}{t}$ es proporcional al peso $b$.  
-Ordenando de mayor a menor: 
-\[
-(10,100)\;\to\;(10,90)\;\to\;(10,90)\;\to\;(10,50)\;\to\;(10,20)\;\to\;(10,10).
-\]
-
-\paragraph{Cálculo del costo óptimo.}  
-Los tiempos acumulados son $F=(10,20,30,40,50,60)$.  
-Multiplicando cada $F_i$ por $b_i$:
-\[
-100\cdot10=1000,\;\;90\cdot20=1800,\;\;90\cdot30=2700,\;\;50\cdot40=2000,\;\;20\cdot50=1000,\;\;10\cdot60=600.
-\]
-La suma da:
-\[
-\sum b_i F_i = \boxed{9100}.
-\]
-
-\paragraph{Comparación con un orden incorrecto.}  
-Si cambiamos el orden y ponemos primero $(10,90)$ y después $(10,100)$, obtenemos:
-\[
-\sum b_i F_i = 9200.
-\]
-Este valor es mayor que $9100$, mostrando que violar la regla empeora la solución.
-
-\paragraph{Empates.}  
-Las dos batallas $(10,90)$ tienen la misma razón $\tfrac{b}{t}=9$.  
-Si las permutamos, el resultado total sigue siendo $9100$.  
-Esto confirma que, ante empates, cualquier orden dentro del bloque es igualmente óptimo.
-
-\subsection{Ejemplo 2: Empates no triviales en la razón}
+\subsection{Ejemplo 1: Todos los ataques con la misma potencia}
 
 \paragraph{Planteo del problema.}  
-La lista de batallas es:
+Supongamos que en todos los minutos la potencia acumulada disponible es la misma:
 \begin{verbatim}
-T_i,B_i
-1,3
-2,4
-3,6
-4,8
-5,5
+x_i (enemigos por minuto) : 100 150 200 250
+f_i (ataque máximo por carga) : 300 300 300 300
 \end{verbatim}
-Aquí los tiempos son distintos, y hay batallas con la misma razón $b/t$.
+La meta es maximizar la cantidad de tropas eliminadas usando ataques óptimos y cargando cuando convenga.
 
-\paragraph{Cálculo de razones y orden greedy.}  
-Las razones son:
-\[
-(1,3)\mapsto 3.0,\quad (2,4)\mapsto 2.0,\quad (3,6)\mapsto 2.0,\quad (4,8)\mapsto 2.0,\quad (5,5)\mapsto 1.0.
-\]
-El orden óptimo es:
-\[
-(1,3)\;\to\;(2,4)\;\to\;(3,6)\;\to\;(4,8)\;\to\;(5,5).
-\]
+\paragraph{Aplicación del algoritmo.}  
+Como todos los valores de $f_i$ son iguales, cualquier minuto de ataque elimina la misma cantidad de enemigos siempre que la potencia acumulada alcance los enemigos presentes.  
+El algoritmo DP selecciona ataques en los minutos donde $x_i$ sea mayor primero, acumulando la máxima cantidad de tropas eliminadas.
 
-\paragraph{Cálculo del costo óptimo.}  
-Los tiempos acumulados son $F=(1,3,6,10,15)$.  
-Contribuciones:
+\paragraph{Resultado esperado.}  
+Si atacamos en los minutos con $x_i$ más grandes primero, la cantidad total de tropas eliminadas es máxima.  
+El algoritmo produce la secuencia:
 \[
-3\cdot1=3,\;\;4\cdot3=12,\;\;6\cdot6=36,\;\;8\cdot10=80,\;\;5\cdot15=75.
+\text{Atacar: minuto 4, minuto 3, minuto 2, minuto 1}
 \]
-La suma da:
+y elimina un total de tropas:
 \[
-\sum b_i F_i = \boxed{206}.
+\text{Total tropas eliminadas} = \min(250,300) + \min(200,300) + \min(150,300) + \min(100,300) = 700
 \]
 
-\paragraph{Comparación con un orden incorrecto.}  
-Si movemos $(5,5)$ delante de las batallas con razón $2.0$, obtenemos $F=(1,6,8,11,15)$ y un total de
-\[
-\sum b_i F_i = 251.
-\]
-Este valor es mayor que $206$, mostrando que romper el orden por $\tfrac{b}{t}$ empeora la solución.
+\paragraph{Empates y flexibilidad.}  
+Si algunos minutos tienen la misma cantidad de enemigos, por ejemplo $x_2 = x_3 = 150$, el algoritmo puede elegir cualquiera de esos minutos sin afectar el total máximo de tropas eliminadas.
 
-\paragraph{Empates.}  
-Las batallas $(2,4),(3,6),(4,8)$ tienen la misma razón $2.0$.  
-Si se permutan entre ellas, por ejemplo $(4,8)\to(3,6)\to(2,4)$, el costo total sigue siendo $206$.  
-Esto confirma que ante empates, cualquier permutación interna dentro del bloque mantiene la solución óptima.
+\subsection{Ejemplo 2: Incremento progresivo de potencia y enemigos}
+
+\paragraph{Planteo del problema.}  
+Considere la siguiente entrada:
+\begin{verbatim}
+x_i : 50 100 150 200
+f_i : 50 100 150 200
+\end{verbatim}
+Cada minuto, los enemigos que llegan y la potencia de ataque disponible aumentan de manera proporcional.
+
+\paragraph{Aplicación del algoritmo.}  
+El algoritmo DP calcula para cada minuto si conviene atacar o cargar.  
+- Atacar demasiado temprano limita el aprovechamiento de la potencia acumulada.  
+- Atacar demasiado tarde hace que los enemigos se acumulen sin poder eliminarlos.  
+
+\paragraph{Resultado esperado.}  
+La estrategia óptima es atacar en cada minuto usando la potencia exacta necesaria:
+\[
+\text{Secuencia de decisiones} = \text{Atacar en minutos 1, 2, 3, 4}
+\]
+Cantidad de tropas eliminadas:
+\[
+50 + 100 + 150 + 200 = 500
+\]
+
+\paragraph{Comparación con un orden subóptimo.}  
+Si el algoritmo eligiera atacar solo en los dos primeros minutos y cargar en los últimos, se eliminarían menos tropas:
+\[
+50 + 100 = 150 < 500
+\]
+Esto muestra que romper la secuencia óptima genera un total menor.
+
+\paragraph{Empates y decisiones equivalentes.}  
+Si dos minutos consecutivos tienen $x_i$ iguales y $f_i$ iguales, intercambiar ataques entre ellos no cambia el total de tropas eliminadas, lo que confirma que el algoritmo maneja correctamente los empates.

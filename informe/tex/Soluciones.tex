@@ -11,7 +11,6 @@ Nomenclatura utilizada:
 Caso base:
 \begin{lstlisting}[language=Python]
     dp[0] = 0  
-    # No hay minutos, no hay daño
 \end{lstlisting}
 Primer caso:
 \begin{lstlisting}[language=Python]
@@ -28,7 +27,7 @@ Lo que me piden es maximizar la cantidad de bajas enemigas, o sea podemos plante
     dp[i] = max(
         # Opcion 1: No atacar en minuto i
         dp[i-1],  
-        # Opción 2: Atacar en i con ultimo ataque en k
+        
         max_{k=1 to i} { dp[k-1] + min(X[i], F[i-k+1]) }
         )
 \end{lstlisting}
