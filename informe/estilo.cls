@@ -110,10 +110,6 @@
     \begin{tabular}{ll}
         \large{Carlos Franco Mendoza Coronado} & \large{111758} \\
         \\
-        \large{Gian Keberlein} & \large{109585} \\
-        \\
-        \large{Juan Cruz Robledo Puch} & \large{106164} \\
-        \\
         \large{Ignacio Julian Rodriguez} & \large{111759} \\
     \end{tabular}
  \end{center}

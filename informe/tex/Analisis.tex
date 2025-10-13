@@ -1,17 +1,19 @@
 \section{Análisis del Problema}
+
 \subsection{Nomenclatura Utilizada}
 Para simplificar y mejorar la explicación del problema, utilizaremos la siguiente nomenclatura:
 \begin{itemize}
-\item $n$: duracion de la batalla.
+\item $n$: duración de la batalla.
 \item $x_i$: cantidad de soldados enemigos que llegan en el minuto $i$.
 \item $t_i$: duración de la batalla $i$.
-\item  $x_1, x_2, \cdots, x_n$: secuencia de ataques.
-\item $f(\cdot)$: funcion que determina la cantidad de bajas enemigas si utilizamos la habilidad en un cierto tiempo.
-\item $f(j)$: cantidad de enemigos eliminados transcurridos j minutos.
+\item $x_1, x_2, \cdots, x_n$: secuencia de ataques.
+\item $f(\cdot)$: función que determina la cantidad de bajas enemigas si utilizamos la habilidad en un cierto momento.
+\item $f(j)$: cantidad de enemigos eliminados transcurridos $j$ minutos.
 \end{itemize}
 
 \subsection{Planteamiento del Problema}
-Para poder dar una solución, primero debemos comprender lo que se nos solicita. El objetivo es desarrollar un algoritmo por \textbf{programación dinámica} que encuentre el tiempo en el cual debemos atacar para poder garantizar la mayor cantidad de bajas enemigas.
-\subsection{Herramientas para resolver el Problema}
-Una vez entendido el problema, debemos identificar la herramienta adecuada para su resolución. Se nos pide específicamente un algoritmo por programación dinámica, lo que corresponde a una estrategia que busca dividir un problema complejo en partes más simples, que estén relacionadas, guardando las soluciones más simples para no recalcularlas de nuevo.\\ 
-Las bibliotecas para medición de tiempos de ejecución son módulos o conjuntos de funciones predesarrollados por otros programadores que nos simplifican la tarea de cuantificar cuánto tarda una función o script en ejecutarse.
+Para poder dar una solución, primero debemos comprender lo que se nos solicita. El objetivo es desarrollar un algoritmo mediante \textbf{programación dinámica} que determine el momento en el cual debemos atacar para garantizar la mayor cantidad de bajas enemigas.
+
+\subsection{Herramientas para Resolver el Problema}
+Una vez entendido el problema, debemos identificar la herramienta adecuada para su resolución. Se nos pide específicamente un algoritmo por programación dinámica, lo que corresponde a una estrategia que busca dividir un problema complejo en partes más simples y relacionadas, almacenando las soluciones de los subproblemas para no recalcularlas nuevamente.\\ 
+Las bibliotecas para la medición de tiempos de ejecución son módulos o conjuntos de funciones predesarrollados por otros programadores que nos simplifican la tarea de cuantificar cuánto tarda una función o script en ejecutarse.

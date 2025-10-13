@@ -1,0 +1,8 @@
+\section{Conclusión}
+En este informe se busca ayudar a la ciudad de Ba Sing Se, una gran ciudad del Reino de la Tierra que se enfrenta al ejército de la Nación del Fuego. Nuestro objetivo es determinar en qué minutos realizar el contraataque para lograr la mayor cantidad posible de bajas enemigas.\\
+
+Para resolver el problema se empleó una estrategia de \textit{Programación Dinámica}, que busca obtener la solución óptima mediante la descomposición del problema en subproblemas más pequeños. Almacenar ciertas soluciones intermedias permite simplificar los cálculos y evitar recomputaciones, generando así una dependencia entre decisiones: para poder obtener el minuto más eficiente es necesario considerar los minutos anteriores.\\
+
+Durante el desarrollo del trabajo pudimos identificar tres parámetros principales: $n$, la cantidad de minutos de la batalla; $x$, la cantidad de enemigos por minuto; y $f(x)$, la cantidad de bajas en el minuto $x$ si se realiza el contraataque. Determinamos que la variable que define la complejidad del algoritmo es $n$, ya que determina la cantidad de veces que deben considerarse las soluciones. En el peor de los casos, nuestro algoritmo presentó una complejidad algorítmica de $O(n^2)$.\\
+
+Finalmente, el algoritmo fue probado tanto con los casos de prueba proporcionados por la cátedra como con pruebas adicionales diseñadas por nosotros, incluyendo casos borde. Los resultados confirmaron la efectividad de la estrategia utilizada, validando así la pertinencia del enfoque adoptado. Este trabajo no solo permitió resolver el problema planteado, sino también afianzar el aprendizaje sobre el diseño, análisis y validación de algoritmos eficientes.

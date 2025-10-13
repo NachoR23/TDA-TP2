@@ -74,7 +74,7 @@ Por lo tanto, la complejidad global del algoritmo es:\[T(n) = O(n^2)\]
 
 Para el desarrollo de este problema podemos reconocer tres variables o parámetros que son influyentes. El primero, el más importante, la cantidad de minutos $n$, la cantidad de tropas por minuto $x$ y la cantidad de bajas posibles en un minuto determinado $f(x)$.
 \begin{enumerate}
-    \item Como mensianmos antes $n$ es el parametro más influyente, ya que para cada minuto $i$ debemos probar todos los posibles puntos de inicio $k$ desde 1 hasta $i$. Cuando $n$ es pequeño, el tiempo de ejecución es aceptable, pero para valores grandes de $n$, el crecimiento cuadrático se vuelve significativo.
+    \item Como mencionamos antes $n$ es el parametro más influyente, ya que para cada minuto $i$ debemos probar todos los posibles puntos de inicio $k$ desde 1 hasta $i$. Cuando $n$ es pequeño, el tiempo de ejecución es aceptable, pero para valores grandes de $n$, el crecimiento cuadrático se vuelve significativo.
     \item El parametro $x$ nos ayuda a tener un limite de bajas que podemos tener en cada minuto, no influye directamente a la complejidad algoritmica pero si es necesario para poder dar una respuesta.
     \item El ultimo pero no menos importante es $f(x)$, el cual tampoco influye directamenra a la complejidad. Más bien nos ayuda a dar con la solución más óptima 
 \end{enumerate}
