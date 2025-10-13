@@ -79,4 +79,5 @@ datos, o estrategias de generación de sets, en el caso que corresponda.
 
 Para poder facilitar la ejecucion del trabajo utilizamos el mismo formato utilizado en el anterior TP,
 esto consiste en ejecutar este comando de terminal:
+```bash
 python3 tp2.py ruta/a/entrada.txt
