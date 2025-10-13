@@ -1,66 +1,81 @@
-\section{Ejemplos ilustrativos del algoritmo de optimización de ataques}
+\section{Complejidad}
 
-En los próximos ejemplos presentamos casos límite donde se muestra que la estrategia del algoritmo siempre da la solución óptima.
+\subsection{Algoritmo Planteado}
 
-\subsection{Ejemplo 1: Todos los ataques con la misma potencia}
+El algoritmo que implementamos para resolver el problema lo podemos dividir en dos partes:\\
+La primera que busca los minutos en los que es óptimo atacar, solución óptima:
+\begin{lstlisting}[language=Python]
+def optimizar_ataques(x, f, n):
+    # usar indexación 1-based para DP y claridad
+    X = [0] + x[:]          # X[1..n]
+    F = [0] + f[:]          # F[1..m], F[j] = f(j)
+    # dp[i] = máximo hasta el minuto i
+    dp = [0] * (n + 1)
+    # prev[i] guarda el valor k que produce la mejor solución atacando en i
+    # si prev[i] = 0 significa que lo mejor fue "no atacar en i" 
+    prev = [0] * (n + 1)
+    for i in range(1, n+1):
+        # opción 1: no atacar en i
+        dp[i] = dp[i-1]
+        prev[i] = 0
+        # opción 2: atacar en i; probar todos los posibles "k" donde k indica
+        # el índice inmediatamente posterior al último ataque (es decir, acumulamos desde k hasta i inclusive: j = i-k+1 minutos de carga)
+        for k in range(1, i+1):
+            j = i - k + 1
+            # Si f no define tantos j, usamos el último valor disponible (creciente)
+            fj = F[j] if j < len(F) else F[-1]
+            gain = dp[k-1] + min(X[i], fj)
+            if gain > dp[i]:
+                dp[i] = gain
+                prev[i] = k
+    return reconstruir(prev,dp,n )
+\end{lstlisting}
+En la segunda parte organizamos los minutos de ataque de manera ordenada y damos una respuesta. La respuesta se forma con la cantidad de bajas totales y una lista ordenada en los minutos que debemos atacar o cargar la habilidad.
+\begin{lstlisting}[language=Python]
+def reconstruir(prev, dp, n):
+    decisiones = []
+    i = n
+    # Reconstruir hacia atrás
+    while i > 0:
+        if prev[i] == 0:
+            decisiones.append(("Cargar", i))
+            i -= 1
+        else:
+            k = prev[i]
+            # El minuto i es de ataque
+            decisiones.append(("Atacar", i))
+            # Los minutos desde k hasta i-1 son de carga
+            for j in range(i-1, k-1, -1):
+                decisiones.append(("Cargar", j))
+            i = k - 1
+    # Ordenar por minuto
+    decisiones.sort(key=lambda x: x[1])
+    secuencia = [decision for decision, minuto in decisiones]
+    total = dp[n]
+    return total, secuencia
+    
+\end{lstlisting}
+\pagebreak 
+\subsection{Complejidad del algoritmo}
+Para poder analizar la complejidad del algoritmo, seguimos con la división presentada anteriormente:
+\begin{itemize}
+    \item \textbf{Parte de optimización o principal}\\
+    En esta parte realizamos dos recorridos, tanto a la lista de soldados que atacan por minuto como a la lista de soluciones o bajas al realizar el contrataque. Con esto nos damos cuenta que tenemos el primer recorrido que depende de $n$ y el segundo de $i$, entonces determinamos lo sigueinte:
+        \[T(n) = \sum_{i=1}^{n} O(i) = O(n^2)\]
+    
+    \item \textbf{Reconstrucción}\\
+    En este caso tenemos que pasar por todas las soluciónes posibles y encontrar la igualdad con nuesta solución optima para poder dar una respuesta, debido a esto nuestra complejidad seria de la siguiente forma:
+        \[O(n) * O(n) = O(n^2)\]
+\end{itemize}
 
-\paragraph{Planteo del problema.}  
-Supongamos que en todos los minutos la potencia acumulada disponible es la misma:
-\begin{verbatim}
-x_i (enemigos por minuto) : 100 150 200 250
-f_i (ataque máximo por carga) : 300 300 300 300
-\end{verbatim}
-La meta es maximizar la cantidad de tropas eliminadas usando ataques óptimos y cargando cuando convenga.
+Por lo tanto, la complejidad global del algoritmo es:\[T(n) = O(n^2)\]
 
-\paragraph{Aplicación del algoritmo.}  
-Como todos los valores de $f_i$ son iguales, cualquier minuto de ataque elimina la misma cantidad de enemigos siempre que la potencia acumulada alcance los enemigos presentes.  
-El algoritmo DP selecciona ataques en los minutos donde $x_i$ sea mayor primero, acumulando la máxima cantidad de tropas eliminadas.
+\subsection{Efecto de los parámetros o variables}
 
-\paragraph{Resultado esperado.}  
-Si atacamos en los minutos con $x_i$ más grandes primero, la cantidad total de tropas eliminadas es máxima.  
-El algoritmo produce la secuencia:
-\[
-\text{Atacar: minuto 4, minuto 3, minuto 2, minuto 1}
-\]
-y elimina un total de tropas:
-\[
-\text{Total tropas eliminadas} = \min(250,300) + \min(200,300) + \min(150,300) + \min(100,300) = 700
-\]
-
-\paragraph{Empates y flexibilidad.}  
-Si algunos minutos tienen la misma cantidad de enemigos, por ejemplo $x_2 = x_3 = 150$, el algoritmo puede elegir cualquiera de esos minutos sin afectar el total máximo de tropas eliminadas.
-
-\subsection{Ejemplo 2: Incremento progresivo de potencia y enemigos}
-
-\paragraph{Planteo del problema.}  
-Considere la siguiente entrada:
-\begin{verbatim}
-x_i : 50 100 150 200
-f_i : 50 100 150 200
-\end{verbatim}
-Cada minuto, los enemigos que llegan y la potencia de ataque disponible aumentan de manera proporcional.
-
-\paragraph{Aplicación del algoritmo.}  
-El algoritmo DP calcula para cada minuto si conviene atacar o cargar.  
-- Atacar demasiado temprano limita el aprovechamiento de la potencia acumulada.  
-- Atacar demasiado tarde hace que los enemigos se acumulen sin poder eliminarlos.  
-
-\paragraph{Resultado esperado.}  
-La estrategia óptima es atacar en cada minuto usando la potencia exacta necesaria:
-\[
-\text{Secuencia de decisiones} = \text{Atacar en minutos 1, 2, 3, 4}
-\]
-Cantidad de tropas eliminadas:
-\[
-50 + 100 + 150 + 200 = 500
-\]
-
-\paragraph{Comparación con un orden subóptimo.}  
-Si el algoritmo eligiera atacar solo en los dos primeros minutos y cargar en los últimos, se eliminarían menos tropas:
-\[
-50 + 100 = 150 < 500
-\]
-Esto muestra que romper la secuencia óptima genera un total menor.
-
-\paragraph{Empates y decisiones equivalentes.}  
-Si dos minutos consecutivos tienen $x_i$ iguales y $f_i$ iguales, intercambiar ataques entre ellos no cambia el total de tropas eliminadas, lo que confirma que el algoritmo maneja correctamente los empates.
+Para el desarrollo de este problema podemos reconocer tres variables o parámetros que son influyentes. El primero, el más importante, la cantidad de minutos $n$, la cantidad de tropas por minuto $x$ y la cantidad de bajas posibles en un minuto determinado $f(x)$.
+\begin{enumerate}
+    \item Como mencionamos antes $n$ es el parametro más influyente, ya que para cada minuto $i$ debemos probar todos los posibles puntos de inicio $k$ desde 1 hasta $i$. Cuando $n$ es pequeño, el tiempo de ejecución es aceptable, pero para valores grandes de $n$, el crecimiento cuadrático se vuelve significativo.
+    \item El parametro $x$ nos ayuda a tener un limite de bajas que podemos tener en cada minuto, no influye directamente a la complejidad algoritmica pero si es necesario para poder dar una respuesta.
+    \item El ultimo pero no menos importante es $f(x)$, el cual tampoco influye directamenra a la complejidad. Más bien nos ayuda a dar con la solución más óptima 
+\end{enumerate}
+En resumen, $n$ determina la complejidad del algoritmo, mientras que $x$ y $f(x)$ determinan la solución óptima en el espacio de búsqueda. 
